@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+    <h1>Nuevo Autor</h1>
+    <form
+      method="post"
+      action="#"
+      th:action="@{/autor/new/submit}"
+      th:object="${autorForm}"
+    >
+      <label>Nombre:<input type="text" id="nombre" th:field="*{nombre}" /></label><br />
+      <label>Email:<input type="email" id="email" th:field="*{email}" /></label><br />
+      <input type="submit" value="Enviar" />
+    </form>
+    <br />
+    <a th:href="@{/autor/list}">Volver</a><br />
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Editar</th>
+                <th>Borrar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="autor : ${listaAutores}">
+              <td th:text="${autor.id}"></td>
+              <td th:text="${autor.nombre}"></td>
+              <td th:text="${autor.email}"></td>
+              <td>
+                <a th:href="@{/autor/edit/{id}(id=${autor.id})}">Editar</a>
+              </td>
+              <td>
+                <a th:href="@{/autor/delete/{id}(id=${autor.id})}" class="btn btn-sm btn-outline-danger">Borrar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    
+</body>
+</html>

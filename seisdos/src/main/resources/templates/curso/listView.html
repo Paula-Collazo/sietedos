@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+      <h1 class="mb-4">Listado de cursos</h1>
+
+      <form
+        th:action="@{/buscar}"
+        method="post"
+        class="row g-2 align-items-end mb-4"
+      >
+        <div class="col-sm-5">
+          <label for="nombre" class="form-label">Buscar por nombre</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            class="form-control"
+            placeholder="Ingrese el nombre del curso"
+            th:value="${nombreBusqueda}"
+          />
+        </div>
+        <div class="col-sm-4">
+          <label for="tematica" class="form-label">Filtro por temática</label>
+          <select id="tematica" name="tematica" class="form-select">
+            <option value="">--Todas--</option>
+            <option
+              th:each="tem : ${T(com.example.myapp.domain.Tematica).values()}"
+              th:value="${tem}"
+              th:text="${tem}"
+              th:selected="${tem.toString()==tematicaSeleccionada}"
+            ></option>
+          </select>
+        </div>
+        <div class="col-sm-3">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+          <a th:href="@{/}" class="btn btn-secondary ms-2">Reset</a>
+        </div>
+      </form>
+
+      <div th:if="${msg!=null}" class="mb-3">
+        <div class="alert alert-info" th:text="${msg}"></div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Temática</th>
+              <th>Precio</th>
+              <th>Autor</th>
+              <th>Editar</th>
+              <th>Borrar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="curso : ${listaCursos}">
+              <td th:text="${curso.id}"></td>
+              <td>
+                <a
+                  th:href="@{/{id}(id=${curso.id})}"
+                  th:text="${curso.nombre}"
+                ></a>
+              </td>
+              <td th:text="${curso.tematica}"></td>
+              <td th:text="${curso.precio}"></td>
+              <td th:text="${curso.autor?.nombre}" ></td>
+              <td>
+                <a
+                  th:href="@{/editar/{id}(id=${curso.id})}"
+                  class="btn btn-sm btn-outline-primary"
+                  >Editar</a
+                >
+              </td>
+              <td>
+                <a
+                  th:href="@{/borrar/{id}(id=${curso.id})}"
+                  class="btn btn-sm btn-outline-danger"
+                  >Borrar</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <a th:href="@{/nuevo}" class="btn btn-success mt-3">Nuevo curso</a>
+      Salario filtro:
+      <input type="text" id="precio">
+      <input type="button" onclick="consultarPrecio()" value="Precio Menor">
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity=""
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      function consultarPrecio(){
+        window.location.href ="/listado1/" +
+                document.getElementById("precio").value;
+      }
+    </script>
+  </body>
+</html>

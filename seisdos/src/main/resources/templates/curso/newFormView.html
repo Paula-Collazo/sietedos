@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+    <h1>Nuevo curso</h1>
+    <form
+      method="post"
+      action="#"
+      th:action="@{/nuevo/submit}"
+      th:object="${cursoForm}"
+    >
+    
+
+      <label>Id:<input type="text" id="id" th:field="*{id}" /> </label><br />
+      <label
+        >Nombre:<input type="text" id="nombre" th:field="*{nombre}" /></label
+      ><br />
+      <label
+        >Precio:<input type="number" id="precio" th:field="*{precio}" /></label
+      ><br />
+      <label>Autor:<select th:field="*{autor}" class="form-select">
+        <option value="" selected>--Seleccione un autor--</option>
+        <option th:each="autor : ${listaAutores}" th:value="${autor.id}" th:text="${autor.nombre}"></option>
+      </select></label><br />
+      Tematica:<br />
+      <div th:each="tem : ${T(com.example.myapp.domain.Tematica).values()}">
+        <input
+          type="radio"
+          name="button1"
+          th:value="${tem}"
+          th:text="${tem}"
+          th:field="*{tematica}"
+        />
+      </div>
+      <input type="submit" value="Enviar" />
+    </form>
+    <br />
+    <a th:href="@{/}">Inicio</a><br />
+  </body>
+</html>
