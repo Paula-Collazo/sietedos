@@ -34,6 +34,7 @@ public class CursosController {
     @GetMapping({ "/", "/list" })
     public String showList(Model model) {
         model.addAttribute("listaCursos", cursoService.obtenerTodos());
+        model.addAttribute("listaAutores" , autorService.obtenerTodos());
         if (txtMsg != null) {
             model.addAttribute("msg", txtMsg);
             txtMsg = null;
@@ -42,7 +43,7 @@ public class CursosController {
     }
 
     @PostMapping("/buscar")
-    public String searchCursos(String nombre, String tematica, Model model) {
+    public String searchCursos(String nombre, String tematica, Long autor, Model model) {
         Tematica t = null;
         if (tematica != null && !tematica.isEmpty()) {
             try {
@@ -52,10 +53,20 @@ public class CursosController {
             }
         }
         List<Curso> entity = cursoService.buscarPorNombreYTematica(nombre, t);
+        
+        // Filtrar por autor si se especifica
+        if (autor != null) {
+            entity = entity.stream()
+                .filter(c -> c.getAutor() != null && c.getAutor().getId().equals(autor))
+                .toList();
+        }
+        
         model.addAttribute("listaCursos", entity);
+        model.addAttribute("listaAutores", autorService.obtenerTodos());
         model.addAttribute("msg", "Resultados de la búsqueda");
         model.addAttribute("nombreBusqueda", nombre);
         model.addAttribute("tematicaSeleccionada", tematica);
+        model.addAttribute("autorSeleccionado", autor);
         return "curso/listView";
     }
     

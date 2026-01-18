@@ -34,11 +34,24 @@ public class CursoServiceImpl implements CursoService {
         // throw new RuntimeException("Curso no encontrado");
     }
 
-    @Override
     public Curso añadir(Curso curso) throws RuntimeException{
        
          if(curso.getPrecio() > 5000){
              throw new RuntimeException("El precio no puede superar los 5000");
+         }
+
+         Double totalActual = repositorio.sumaTotalCursosPorAutor(curso.getAutor().getId());
+         
+         if (totalActual == null) {
+             totalActual = 0.0;
+         }
+         
+         Double nuevoTotal = totalActual + curso.getPrecio();
+
+         if (curso.getAutor().getLimiteCosteTotalCursos() != null &&
+             nuevoTotal > curso.getAutor().getLimiteCosteTotalCursos()) {
+            throw new RuntimeException("El coste total de los cursos supera el límite permitido para este autor/a");
+            
          }
           return repositorio.save(curso);
         
@@ -57,7 +70,25 @@ public class CursoServiceImpl implements CursoService {
             throw new RuntimeException("El precio no puede superar los 5000");
         }
 
-        obtenerPorId(curso.getId()); //lanza excepción si no existe
+        obtenerPorId(curso.getId());
+        
+        Curso cursoAnterior = repositorio.findById(curso.getId()).get();
+        
+        Double total = repositorio.sumaTotalCursosPorAutor(curso.getAutor().getId());
+
+        if (total == null) {
+            total = 0.0;
+        }
+        
+        // Restamos el precio anterior y sumamos el nuevo
+        Double nuevoTotal = total - cursoAnterior.getPrecio() + curso.getPrecio();
+
+        if (curso.getAutor().getLimiteCosteTotalCursos() != null &&
+            nuevoTotal > curso.getAutor().getLimiteCosteTotalCursos()) {
+            throw new RuntimeException(
+                "El coste total de los cursos supera el límite permitido para este autor/a"
+            );
+        }
         return repositorio.save(curso);
         // int pos = repositorio.indexOf(curso);
         // // if (pos == -1) throw new RuntimeException ("Curso no encontrado");

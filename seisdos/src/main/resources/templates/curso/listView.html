@@ -34,6 +34,18 @@
             ></option>
           </select>
         </div>
+        <div class="col-sm-4">
+          <label for="autor" class="form-label">Filtro por autor</label>
+          <select id="autor" name="autor" class="form-select">
+            <option value="">--Todos--</option>
+            <option
+              th:each="autor : ${listaAutores}"
+              th:value="${autor.id}"
+              th:text="${autor.nombre}"
+              th:selected="${autor.id}==${autorSeleccionado}"
+            ></option>
+          </select>
+        </div>
         <div class="col-sm-3">
           <button type="submit" class="btn btn-primary">Buscar</button>
           <a th:href="@{/}" class="btn btn-secondary ms-2">Reset</a>
