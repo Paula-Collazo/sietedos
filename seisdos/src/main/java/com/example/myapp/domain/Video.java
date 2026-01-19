@@ -31,5 +31,5 @@ public class Video {
     private String idYt;
 
     @ManyToOne
-    private Video video;
+    private Curso curso;
 }

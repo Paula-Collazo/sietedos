@@ -167,5 +167,13 @@ public class CursosController {
         model.addAttribute("listaCursos", cursos);
         return "curso/listadosView";
     }
+
+    @GetMapping("/{id}/videos")
+    public String showVideosByCurso(@PathVariable long id, Model model) {
+    model.addAttribute("listaVideos",
+            videoService.obtenerPorCursoId(id));
+    return "curso/video/listView";
+}
+
     
 }

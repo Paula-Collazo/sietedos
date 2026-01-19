@@ -41,6 +41,7 @@ public class Main {
 			video.setDuracion(500);
 			video.setIdYt("jdlfajdsljfv");
 			curso.getVideos().add(video);
+			video.setCurso(curso);
 				
 			
 			curso.setAutor(autor);
@@ -64,11 +65,5 @@ public class Main {
 
 		};
 	}
-
-    private static class HashSet {
-
-        public HashSet() {
-        }
-    }
 
 }

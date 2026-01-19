@@ -57,17 +57,17 @@ public class VideosController {
         }
         
     }
-    @GetMapping("/{id}")
-    public String shoForm(@PathVariable long id, Model model) {
-        Video video = videoService.obtenerPorCursoId(id);
-        if(video != null) {
-            model.addAttribute("videoForm", video);
-            return "curso/video/editFormView";
-        } else {
-            return "redirect:/video/list";
-        }
+    // @GetMapping("/{id}")
+    // public String shoForm(@PathVariable long id, Model model) {
+    //     Video video = videoService.obtenerPorCursoId(id);
+    //     if(video != null) {
+    //         model.addAttribute("videoForm", video);
+    //         return "curso/video/editFormView";
+    //     } else {
+    //         return "redirect:/video/list";
+    //     }
         
-    }
+    // }
 
     @PostMapping("/editar/submit")
     public String showEditSubmit(@Valid Video videoForm,

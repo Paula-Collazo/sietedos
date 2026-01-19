@@ -1,12 +1,13 @@
 package com.example.myapp.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.myapp.Repository.VideoRepository;
 import com.example.myapp.Repository.CursoRepository;
+import com.example.myapp.Repository.VideoRepository;
 import com.example.myapp.domain.Video;
 
 @Service
@@ -28,11 +29,12 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Video obtenerPorCursoId(long id) {
-        // return repositorioVideo.findByCurso(cursoRepository.findById(id)).orElse(null);
-
-        // return repositorioVideo.findByCurso(cursoRepository.findById(id)).orElse(null);
+    public Set<Video> obtenerPorCursoId(long id) {
+        return cursoRepository.findById(id)
+                .map(repositorioVideo::findByCurso)
+                .orElse(Set.of());
     }
+
     @Override
     public Video obtenerPorId(long id) {
         return repositorioVideo.findById(id).orElse(null);
