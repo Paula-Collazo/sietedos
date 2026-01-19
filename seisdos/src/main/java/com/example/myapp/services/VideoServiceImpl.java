@@ -30,10 +30,25 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Set<Video> obtenerPorCursoId(long id) {
-        return cursoRepository.findById(id)
-                .map(repositorioVideo::findByCurso)
-                .orElse(Set.of());
-    }
+
+    // 1️⃣ Buscamos en la base de datos un Curso con el id recibido
+    //    findById devuelve un Optional<Curso>, porque el curso puede existir o no
+    return cursoRepository.findById(id)
+
+            // 2️⃣ Si el curso EXISTE dentro del Optional:
+            //    - se ejecuta el map
+            //    - el Curso se pasa como parámetro a findByCurso
+            //    - findByCurso devuelve un Set<Video> con todos los vídeos de ese curso
+            //    El resultado pasa a ser Optional<Set<Video>>
+            .map(repositorioVideo::findByCurso)
+
+            // 3️⃣ Si el curso NO existe (Optional vacío):
+            //    - el map NO se ejecuta
+            //    - orElse devuelve el valor por defecto
+            //    En este caso, un Set vacío (sin vídeos)
+            .orElse(Set.of());
+}
+
 
     @Override
     public Video obtenerPorId(long id) {
