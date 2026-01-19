@@ -67,6 +67,7 @@
               <th>Autor</th>
               <th>Editar</th>
               <th>Borrar</th>
+              <th>Videos</th>
             </tr>
           </thead>
           <tbody>
@@ -93,6 +94,13 @@
                   th:href="@{/borrar/{id}(id=${curso.id})}"
                   class="btn btn-sm btn-outline-danger"
                   >Borrar</a
+                >
+              </td>
+              <td>
+                <a
+                  th:href="@{/video/{id}(id=${curso.id})}"
+                  class="btn btn-sm btn-outline-primary"
+                  >Videos</a
                 >
               </td>
             </tr>

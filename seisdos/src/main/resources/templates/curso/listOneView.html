@@ -12,6 +12,8 @@
               <tr><td>Precio</td><td th:text="${curso.precio}"></td></tr>
               <tr><td>Tematica</td><td th:text="${curso.tematica}"></td></tr>
               <tr><td>Autor</td><td th:text="${curso.autor?.nombre}"></td></tr>
+              <tr><td><a th:href="@{/video/{id}(id=${curso.id})}" class="btn btn-sm btn-outline-primary">Videos</a>
+              </td></tr>
               <tr><td><a th:href="@{/editar/{id}(id=${curso.id})}">Editar</a></td>
                   <td><a th:href="@{/borrar/{id}(id=${curso.id})}">Borrar</a>
                       <a  th:href="@{/}">Inicio</a></td></tr>

@@ -14,6 +14,7 @@ import com.example.myapp.domain.Curso;
 import com.example.myapp.domain.Tematica;
 import com.example.myapp.services.AutorService;
 import com.example.myapp.services.CursoService;
+import com.example.myapp.services.VideoService;
 
 import jakarta.validation.Valid;
 
@@ -28,6 +29,9 @@ public class CursosController {
     @Autowired
     public AutorService autorService;
 
+    @Autowired
+    public VideoService videoService;
+
 
     private String txtMsg;
 
@@ -35,6 +39,7 @@ public class CursosController {
     public String showList(Model model) {
         model.addAttribute("listaCursos", cursoService.obtenerTodos());
         model.addAttribute("listaAutores" , autorService.obtenerTodos());
+        model.addAttribute("listaVideos" , videoService.obtenerTodos());
         if (txtMsg != null) {
             model.addAttribute("msg", txtMsg);
             txtMsg = null;
@@ -63,6 +68,7 @@ public class CursosController {
         
         model.addAttribute("listaCursos", entity);
         model.addAttribute("listaAutores", autorService.obtenerTodos());
+        model.addAttribute("listaVideos", videoService.obtenerTodos());
         model.addAttribute("msg", "Resultados de la búsqueda");
         model.addAttribute("nombreBusqueda", nombre);
         model.addAttribute("tematicaSeleccionada", tematica);

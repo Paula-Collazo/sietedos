@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+    <h1>Editar Video</h1>
+    <form method="post" action="#" 
+            th:action="@{/video/editar/submit}" 
+            th:object="${videoForm}">
+            <input type="hidden" id="id" th:field="*{id}" />
+            <label>Descripción:<input type="text" id="descripcion" th:field="*{descripcion}" /></label><br/>
+            <label>Duración:<input type="number" id="duracion" th:field="*{duracion}"/></label><br/>
+            <label>idYt:<input type="text" id="idYt" th:field="*{idYt}"/></label><br/>
+            <input  type="submit" value="Enviar" />
+            <a  th:href="@{/video/list}">Volver</a>
+    </form>
+  </body>
+</html>

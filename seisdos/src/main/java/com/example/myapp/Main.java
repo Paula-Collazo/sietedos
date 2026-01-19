@@ -1,5 +1,6 @@
 package com.example.myapp;
 
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,8 +9,10 @@ import org.springframework.context.annotation.Bean;
 import com.example.myapp.domain.Autor;
 import com.example.myapp.domain.Curso;
 import com.example.myapp.domain.Tematica;
+import com.example.myapp.domain.Video;
 import com.example.myapp.services.AutorService;
 import com.example.myapp.services.CursoService;
+import com.example.myapp.services.VideoService;
 
 @SpringBootApplication
 public class Main {
@@ -19,7 +22,7 @@ public class Main {
 	}
 
 	@Bean
-	CommandLineRunner initData(CursoService cursoService, AutorService autorService ) {
+	CommandLineRunner initData(CursoService cursoService, AutorService autorService, VideoService videoService ) {
 		return args -> {
 			Curso curso = new Curso();
 			curso.setNombre("Curso de Programación desde cero");
@@ -33,6 +36,13 @@ public class Main {
 			autor.setEmail("larryCa@gmail.com");
 			autor.setLimiteCosteTotalCursos(5000.0);
 
+			Video video = new Video();
+			video.setDescripcion("PRUEBAAAAAAA");
+			video.setDuracion(500);
+			video.setIdYt("jdlfajdsljfv");
+			curso.getVideos().add(video);
+				
+			
 			curso.setAutor(autor);
 			autorService.añadir(autor);
 			cursoService.añadir(curso);
@@ -51,10 +61,14 @@ public class Main {
 			autorService.añadir(autor2);
 			cursoService.añadir(curso2);
 
-			
-			
 
 		};
 	}
+
+    private static class HashSet {
+
+        public HashSet() {
+        }
+    }
 
 }

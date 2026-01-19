@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+    <h1 class="mb-4">Listado de Videos</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descripción</th>
+                <th>Duración</th>
+                <th>idYt</th>
+                <th>Editar</th>
+                <th>Borrar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="video : ${listaVideos}">
+              <td th:text="${video.id}"></td>
+              <td th:text="${video.descripcion}"></td>
+              <td th:text="${video.duracion}"></td>
+              <td th:text="${video.idYt}"></td>
+              <td>
+                <a th:href="@{/video/edit/{id}(id=${video.id})}">Editar</a>
+              </td>
+              <td>
+                <a th:href="@{/video/delete/{id}(id=${video.id})}" class="btn btn-sm btn-outline-danger">Borrar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    
+</body>
+</html>
