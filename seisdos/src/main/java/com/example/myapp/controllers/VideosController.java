@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.myapp.domain.Video;
+import com.example.myapp.services.CursoService;
 import com.example.myapp.services.VideoService;
 
 import jakarta.validation.Valid;
@@ -20,6 +21,9 @@ public class VideosController {
     
     @Autowired
     public VideoService videoService;
+    
+    @Autowired
+    public CursoService cursoService;
 
     @GetMapping({ "/", "/list" })
     public String showList(Model model) {
@@ -33,6 +37,7 @@ public class VideosController {
     public String showNew(Model model) {
         // el commandobject del formulario es una instancia de video vacia
         model.addAttribute("videoForm", new Video());
+        model.addAttribute("listaCursos", cursoService.obtenerTodos());
         return "curso/video/newFormView";
     }
 
@@ -51,6 +56,7 @@ public class VideosController {
         Video video = videoService.obtenerPorId(id);
         if(video != null) {
             model.addAttribute("videoForm", video);
+            model.addAttribute("listaCursos", cursoService.obtenerTodos());
             return "curso/video/editFormView";
         } else {
             return "redirect:/video/list";

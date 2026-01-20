@@ -14,6 +14,10 @@
       <label>Descripción:<input type="text" id="descripcion" th:field="*{descripcion}" /></label><br />
       <label>Duración:<input type="number" id="duracion" th:field="*{duracion}" /></label><br />
       <label>idYt:<input type="text" id="idYt" th:field="*{idYt}" /></label><br />
+      <label>Curso:<select th:field="*{curso}" class="form-select">
+        <option value="" selected>--Seleccione un curso--</option>
+        <option th:each="curso : ${listaCursos}" th:value="${curso.id}" th:text="${curso.nombre}"></option>
+      </select></label><br />
       <input type="submit" value="Enviar" />
     </form>
     <br />
