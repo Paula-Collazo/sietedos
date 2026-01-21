@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+    <h1>Nuevo Influencer</h1>
+    <form
+      method="post"
+      action="#"
+      th:action="@{/influencer/new/submit}"
+      th:object="${influencerForm}"
+    >
+      <label>User:<input type="text" id="nombreUsuario" th:field="*{nombreUsuario}" /></label><br />
+      <input type="submit" value="Enviar" />
+    </form>
+    <br />
+    <a th:href="@{/influencer/list}">Volver</a><br />
+  </body>
+</html>

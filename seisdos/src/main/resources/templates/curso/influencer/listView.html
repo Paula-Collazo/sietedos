@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+    <h1 class="mb-4">Listado de Influenceres</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="influencer : ${listaInfluencers}">
+              <td th:text="${influencer.id}"></td>
+              <td th:text="${influencer.nombreUsuario}"></td>
+              <td>
+                <a th:href="@{/influencer/edit/{id}(id=${influencer.id})}">Editar</a>
+              </td>
+              <td>
+                <a th:href="@{/influencer/delete/{id}(id=${influencer.id})}" class="btn btn-sm btn-outline-danger">Borrar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <a th:href="@{/influencer/new}" class="btn btn-success mt-3">Nuevo Influencer</a>
+    
+</body>
+</html>
