@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+    <h1>Editar Libro</h1>
+    <form method="post" action="#" 
+            th:action="@{/libro/editar/submit}" 
+            th:object="${libroForm}">
+            <input type="hidden" id="id" th:field="*{id}" />
+            <label>Título:<input type="text" id="titulo" th:field="*{titulo}" /></label><br/>
+             <label>Curso:<select th:field="*{curso.id}" class="form-select">
+            <option value="" selected>--Seleccione un curso--</option>
+            <option th:each="curso : ${listaCursos}" th:value="${curso.id}" th:text="${curso.nombre}"></option>
+            </select></label><br />
+            <input  type="submit" value="Enviar" />
+            <a  th:href="@{/libro/list}">Volver</a>
+    </form>
+  </body>
+</html>

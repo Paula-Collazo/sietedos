@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{curso/fragments/fragments :: head}"></head>
+  <body>
+    <nav th:replace="~{curso/fragments/fragments :: menu}"></nav>
+    <div class="container mt-4">
+    <h1 class="mb-4">Listado de Libros</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Curso</th>
+                <th>Editar</th>
+                <th>Borrar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="libro : ${listaLibros}">
+              <td th:text="${libro.id}"></td>
+              <td th:text="${libro.titulo}"></td>
+              <td th:text="${libro.curso.getNombre()}"></td>
+              <td>
+                <a th:href="@{/libro/edit/{id}(id=${libro.id})}">Editar</a>
+              </td>
+              <td>
+                <a th:href="@{/libro/delete/{id}(id=${libro.id})}" class="btn btn-sm btn-outline-danger">Borrar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <a th:href="@{/libro/new}" class="btn btn-success mt-3">Nuevo Libro</a>
+    
+</body>
+</html>
