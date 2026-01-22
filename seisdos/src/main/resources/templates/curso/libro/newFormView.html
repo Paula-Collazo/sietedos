@@ -12,10 +12,18 @@
       th:object="${libroForm}"
     >
       <label>Título:<input type="text" id="titulo" th:field="*{titulo}" /></label><br />
+      <div class="text-danger"
+            th:if="${#fields.hasErrors('titulo')}"
+            th:errors="*{titulo}">
+            </div>
       <label>Curso:<select th:field="*{curso.id}" class="form-select">
-        <option value="" selected>--Seleccione un curso--</option>
+        <option value="" selected>-- Sin curso --</option>
         <option th:each="curso : ${listaCursos}" th:value="${curso.id}" th:text="${curso.nombre}"></option>
       </select></label><br />
+      <div class="text-danger"
+      th:if="${#fields.hasErrors('curso')}"
+      th:errors="*{curso}">
+    </div>
       <input type="submit" value="Enviar" />
     </form>
     <br />

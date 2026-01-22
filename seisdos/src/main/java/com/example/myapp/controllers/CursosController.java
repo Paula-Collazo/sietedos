@@ -154,10 +154,15 @@ public class CursosController {
     }
 
     @GetMapping("/borrar/{id}")
-    public String showDelete(@PathVariable long id) {
-        cursoService.borrar(id);
-        txtMsg = "Operación realizada con éxito";
-        return "redirect:/";
+    public String showDelete(@PathVariable long id, Model model) {
+        try {
+            cursoService.borrar(id);
+            return "redirect:/libro/list";
+        } catch (IllegalStateException e) {
+            model.addAttribute("error", "No puedes borra el curso si tiene un libro asignado");
+            model.addAttribute("listaCursos", cursoService.obtenerTodos()); // refrescar lista
+            return "curso/listView"; // tu vista de lista de cursos
+        }
     }
 
     @GetMapping("/listado1/{precio}")

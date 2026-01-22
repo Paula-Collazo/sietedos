@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,42 +46,55 @@ public class LibroController {
         return "curso/libro/newFormView";
     }
 
-    @PostMapping("/new/submit")
-public String showNewSubmit(@Valid Libro libroForm,
+   @PostMapping("/new/submit")
+    public String showNewSubmit(@Valid @ModelAttribute("libroForm") Libro libroForm,
                             BindingResult bindingResult,
                             Model model) {
 
-    // 1️⃣ Validaciones básicas
-    if (bindingResult.hasErrors()) {
-        // Mantener libroForm y enviar lista de cursos
-        model.addAttribute("listaCursos", cursoService.obtenerTodos());
-        return "curso/libro/newFormView"; // ✅ NO redirect
-    }
-
-    // 2️⃣ Validar que el curso seleccionado no tenga ya un libro
+    // 🔹 1️⃣ Resolver el curso REAL a partir del id
     if (libroForm.getCurso() != null && libroForm.getCurso().getId() != null) {
-        Curso cursoSeleccionado = cursoService.obtenerPorId(libroForm.getCurso().getId());
 
+        Curso cursoSeleccionado =
+                cursoService.obtenerPorId(libroForm.getCurso().getId());
+
+        // 🔴 Validación de negocio @OneToOne
         if (libroService.obtenerPorCurso(cursoSeleccionado) != null) {
-            bindingResult.rejectValue("curso", "error.libro", "Este curso ya tiene un libro asignado");
-            model.addAttribute("listaCursos", cursoService.obtenerTodos());
-            return "curso/libro/newFormView"; // ✅ NO redirect
+            bindingResult.rejectValue(
+                "curso",
+                "error.libro",
+                "No puede haber más de un libro por curso"
+            );
         }
 
-        // Asignar el curso real al libro
         libroForm.setCurso(cursoSeleccionado);
+    } else {
+    libroForm.setCurso(null);
     }
 
-    // 3️⃣ Guardar libro
-    libroService.anadir(libroForm);
+    // 🔹 2️⃣ AHORA sí comprobamos errores
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("listaCursos", cursoService.obtenerTodos());
+        return "curso/libro/newFormView";
+    }
 
-    // 4️⃣ Redirigir al listado
+    // 🔹 3️⃣ Guardar
+    try {
+    libroService.anadir(libroForm);
+    } catch (IllegalStateException e) {
+        bindingResult.rejectValue(
+            "titulo",
+            "error.libro",
+            "Ese título ya existe"
+        );
+        model.addAttribute("listaCursos", cursoService.obtenerTodos());
+        return "curso/libro/newFormView";
+    }
     return "redirect:/libro/list";
 }
 
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable long id, Model model) {
+    public String showEditForm(@PathVariable long id, Model model ) {
         Libro libro = libroService.obtenerPorId(id);
         if(libro != null) {
             model.addAttribute("libroForm", libro);
@@ -90,6 +104,7 @@ public String showNewSubmit(@Valid Libro libroForm,
         } else {
             return "redirect:/libro/list";
         }
+        
         
     }
     // @GetMapping("/{id}")
@@ -105,19 +120,61 @@ public String showNewSubmit(@Valid Libro libroForm,
     // }
 
     @PostMapping("/editar/submit")
-    public String showEditSubmit(@Valid Libro libroForm,
-            BindingResult bindingResult) {
+    public String showEditSubmit(
+        @Valid @ModelAttribute("libroForm") Libro libroForm,
+        BindingResult bindingResult,
+        Model model) {
 
-        if (!bindingResult.hasErrors()) {
-            libroService.editar(libroForm);
+    // 🔹 Resolver curso real
+    if (libroForm.getCurso() != null && libroForm.getCurso().getId() != null) {
+
+        Curso cursoSeleccionado =
+                cursoService.obtenerPorId(libroForm.getCurso().getId());
+
+        Libro libroExistente =
+                libroService.obtenerPorCurso(cursoSeleccionado);
+
+        // 🔴 Validación OneToOne SOLO si es otro libro
+        if (libroExistente != null
+                && libroExistente.getId() != libroForm.getId()) {
+
+            bindingResult.rejectValue(
+                "curso",
+                "error.libro",
+                "Este curso ya tiene otro libro asignado"
+            );
         }
-        return "redirect:/libro/list";
-       
+
+        libroForm.setCurso(cursoSeleccionado);
+    }else {
+    libroForm.setCurso(null);
     }
 
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("listaCursos", cursoService.obtenerTodos());
+        return "curso/libro/editFormView";
+    }
+
+    try {
+        libroService.editar(libroForm);
+    } catch (IllegalStateException e) {
+        bindingResult.rejectValue(
+            "titulo",
+            "error.libro",
+            "Ese título ya existe"
+        );
+        model.addAttribute("listaCursos", cursoService.obtenerTodos());
+        return "curso/libro/editFormView";
+    }
+
+    return "redirect:/libro/list";
+}
+
+
     @GetMapping("/delete/{id}")
-    public String showDelete(@PathVariable long id) {
+    public String showDelete(@PathVariable long id, Model model) {
         libroService.borrar(id);
         return "redirect:/libro/list";
+       
     }
 }

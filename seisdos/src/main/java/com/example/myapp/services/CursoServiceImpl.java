@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.example.myapp.Repository.CursoRepository;
+import com.example.myapp.Repository.LibroRepository;
 import com.example.myapp.domain.Curso;
 
 @Service
@@ -16,6 +17,10 @@ public class CursoServiceImpl implements CursoService {
 
     @Autowired
     private CursoRepository repositorio;
+
+    @Autowired
+    private LibroRepository repositorioLibro;
+
 
 
     @Override
@@ -101,7 +106,13 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     public void borrar(Long id) {
-        obtenerPorId(id);//lanza excepción si no existe
+        obtenerPorId(id);
+        
+        Curso curso = repositorio.findById(id).orElseThrow(() -> new IllegalStateException("Curso no encontrado"));
+
+        if (repositorioLibro.findByCurso(curso) != null ) {
+            throw new IllegalStateException("No se puede borrar el curso: tiene un libro asignado");
+        }//lanza excepción si no existe
         repositorio.deleteById(id);
         // Curso curso = this.obtenerPorId(id);
         // if (curso != null)

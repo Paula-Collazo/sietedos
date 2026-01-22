@@ -19,7 +19,7 @@
             <tr th:each="libro : ${listaLibros}">
               <td th:text="${libro.id}"></td>
               <td th:text="${libro.titulo}"></td>
-              <td th:text="${libro.curso.getNombre()}"></td>
+              <td th:text="${libro.curso != null ? libro.curso.nombre : ''}"></td>
               <td>
                 <a th:href="@{/libro/edit/{id}(id=${libro.id})}">Editar</a>
               </td>

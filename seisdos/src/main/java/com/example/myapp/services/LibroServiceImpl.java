@@ -1,15 +1,14 @@
 package com.example.myapp.services;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.myapp.Repository.LibroRepository;
 import com.example.myapp.domain.Curso;
 import com.example.myapp.domain.Libro;
-import com.example.myapp.domain.Video;
 
 @Service
 public class LibroServiceImpl implements LibroService {
@@ -17,8 +16,12 @@ public class LibroServiceImpl implements LibroService {
     private LibroRepository repositorio;
 
     @Override
-    public Libro anadir(Libro curso) {
-        return repositorio.save(curso);
+    public Libro anadir(Libro libro) {
+    try {
+        return repositorio.save(libro);
+    } catch (DataIntegrityViolationException e) {
+        throw new IllegalStateException("titulo_duplicado");
+    }
     }
     
     @Override
@@ -32,12 +35,17 @@ public class LibroServiceImpl implements LibroService {
     }
     
     @Override
-    public Libro editar(Libro curso) {
-        return repositorio.save(curso);
+    public Libro editar(Libro libro) {
+    try {
+        return repositorio.save(libro);
+    } catch (DataIntegrityViolationException e) {
+        throw new IllegalStateException("titulo_duplicado");
+    }
     }
     
     @Override
     public void borrar(Long id) {
+        
         repositorio.deleteById(id);
 }
 

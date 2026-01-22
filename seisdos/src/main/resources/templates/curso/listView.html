@@ -107,6 +107,9 @@
           </tbody>
         </table>
       </div>
+      <div th:if="${error}" class="alert alert-danger">
+      <p th:text="${error}"></p>
+      </div>
 
       <a th:href="@{/nuevo}" class="btn btn-success mt-3">Nuevo curso</a>
       Salario filtro:
