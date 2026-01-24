@@ -22,6 +22,11 @@ public interface CursoService {
 
     List<Curso> obtenerCursoPrecioMenor (double precio);
 
+    List<Curso> getVehiculosPaginados (Integer pagenum);
+
+    int getTotalPaginas();
+
+
     
 
 }

@@ -1,10 +1,14 @@
 package com.example.myapp.services;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.myapp.Repository.CursoRepository;
@@ -21,7 +25,7 @@ public class CursoServiceImpl implements CursoService {
     @Autowired
     private LibroRepository repositorioLibro;
 
-
+    private final Integer pageSize = 2;
 
     @Override
     public List<Curso> obtenerTodos() {
@@ -149,5 +153,22 @@ public class CursoServiceImpl implements CursoService {
     @Override
     public List<Curso> obtenerCursoPrecioMenor(double precio){
         return repositorio.findByPrecioLessThan(precio);
+    }
+
+    @Override
+    public List<Curso> getVehiculosPaginados(Integer pagenum) {
+        Pageable paging = PageRequest.of(pagenum, pageSize);
+        Page<Curso> pagedResult  = repositorio.findAll(paging);
+        if (pagedResult.hasContent()) return pagedResult.getContent();
+        else return null;
+
+        
+    }
+
+    @Override
+    public int getTotalPaginas() {
+        Pageable paging = PageRequest.of(0, pageSize);
+        Page<Curso> pagedResult = repositorio.findAll(paging);
+        return pagedResult.getTotalPages();
     }
 }

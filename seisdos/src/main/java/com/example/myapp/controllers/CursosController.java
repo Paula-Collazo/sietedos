@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.myapp.domain.Curso;
 import com.example.myapp.domain.Tematica;
@@ -36,8 +37,18 @@ public class CursosController {
     private String txtMsg;
 
     @GetMapping({ "/", "/list" })
-    public String showList(Model model) {
-        model.addAttribute("listaCursos", cursoService.obtenerTodos());
+    public String showList(@RequestParam(required = false) Integer pag,  Model model) {
+
+        int ultPag = cursoService.getTotalPaginas() -1;
+        if (pag == null || pag < 0 || pag > ultPag) pag = 0;
+        Integer pagSig = ultPag > pag ? pag +1 : ultPag;
+        Integer pagAnt = pag > 0 ? pag - 1 : 0;
+
+
+        model.addAttribute("listaCursos", cursoService.getVehiculosPaginados(pag));
+        model.addAttribute("paginaSiguiente", pagSig);
+        model.addAttribute("paginaAnterior", pagAnt);
+        model.addAttribute("paginaFinal", ultPag);
         model.addAttribute("listaAutores" , autorService.obtenerTodos());
         model.addAttribute("listaVideos" , videoService.obtenerTodos());
         if (txtMsg != null) {

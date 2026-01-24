@@ -106,6 +106,14 @@
             </tr>
           </tbody>
         </table>
+        <a th:href="@{/?pag=0}">Pág Inicial</a> &nbsp;|&nbsp;
+        <a th:href="@{/(pag=${paginaAnterior})}">Pág ant</a> &nbsp;|&nbsp;
+        <a th:href="@{/(pag=${paginaSiguiente})}">Pág sig</a> &nbsp;|&nbsp;
+        <a th:href="@{/(pag=${paginaFinal})}">Últ. pág</a>
+
+
+        
+
       </div>
       <div th:if="${error}" class="alert alert-danger">
       <p th:text="${error}"></p>
